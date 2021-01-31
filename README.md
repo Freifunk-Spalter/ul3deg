@@ -8,5 +8,10 @@ This can happen very easily via an HTTPS REST interface. The gateway is queried 
 
 It also becomes interesting when we work with multiple prefixes with combination from different gateways. We can switch through multiple prefixes and distribute different prefixes to clients. This enables an IPv6 prefix privacy extension across an entire mesh network.
 
+![](docs/prefix.png)
+
+If preferred lifetime is over, only downstream traffic is allowed. In the source-selection the IP address will be avoided.
+
+
 ## Needed
 - [odhcpcd PR](https://patchwork.ozlabs.org/project/openwrt/patch/20210130163240.28887-1-vincent@systemli.org/)

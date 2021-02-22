@@ -54,8 +54,10 @@ define Package/ul3degc
 endef
 
 define Package/ul3degc/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) ./ul3deg-client/ul3degc.sh $(1)/usr/bin/ul3degc
+
 	$(INSTALL_DIR) $(1)/usr/share/ul3deg/
-	$(INSTALL_BIN) ./ul3deg-client/lib/configure_gateway.sh $(1)/usr/share/ul3deg/configure_gateway.sh
 	$(INSTALL_BIN) ./ul3deg-client/lib/rpcd_ubus.sh $(1)/usr/share/ul3deg/rpcd_ubus.sh
 	$(INSTALL_BIN) ./ul3deg-client/lib/babel.sh $(1)/usr/share/ul3deg/babel.sh
 endef

@@ -2,14 +2,11 @@
 
 . /usr/share/libubox/jshn.sh
 
-. /usr/share/ul3deg/delete_prefix.sh
-. /usr/share/ul3deg/install_prefix.sh
-. /usr/share/ul3deg/manage_prefixes.sh
 . /usr/share/ul3deg/babel_server.sh
 
 case "$1" in
 	list)
-		cmd='{ "get_free_prefix": {"random":"true"} })'
+		cmd='{ "get_free_prefix": {"random":"true"} }'
 		echo $cmd
 	;;
 	call)

@@ -33,7 +33,7 @@ function get_free_prefix {
     tmp_ip=$(owipcalc $prefix next $prefix_size)
     for i in `seq $max_num`; do
         tmp_ip=$(owipcalc $tmp_ip next $prefix_size)
-        if [ "$(is_route_installed $tmp_ip)" == "1" ] && [ "$(prefix_in_otherprefixes 000 $tmp_ip)" == "0" ]; then
+        if [ "$(is_route_installed $tmp_ip)" == "1" ]; then
             echo $tmp_ip
 	    return 0
         fi
@@ -47,7 +47,7 @@ function get_free_random_prefix {
     max_num=$(owipcalc $prefix howmany $prefix_size)
     for i in `seq $max_num`; do # some abitary number of allowed cycles
         tmp_ip=$(get_random_prefix $prefix $prefix_size)
-        if [ "$(is_route_installed $tmp_ip)" == "1" ] && [ "$(prefix_in_otherprefixes 000 $tmp_ip)" == "0" ]; then
+        if [ "$(is_route_installed $tmp_ip)" == "1" ] ; then
             echo $tmp_ip
 	    return 0
         fi
@@ -81,7 +81,7 @@ function is_route_installed {
     echo "0"
 }
 
-function prase_netifd_prefix {
+function parse_netifd_prefix {
     ubuscall=$(ubus call network.interface.wan6 status)
 
     json_load "$ubuscall"
@@ -103,7 +103,7 @@ function get_free_prefix_json {
     json_load $json_input
     json_get_var random random
 
-    netifdcall=$(prase_netifd_prefix)
+    netifdcall=$(parse_netifd_prefix)
 
     gw=$(echo $netifdcall | awk '{print $1}')
     valid=$(echo $netifdcall | awk '{print $2}')

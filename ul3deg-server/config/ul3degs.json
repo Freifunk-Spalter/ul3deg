@@ -1,0 +1,19 @@
+{
+    "ul3deg": {
+        "description": "Ul3deg",
+        "read": {
+            "ubus": {
+                    "ul3degs": [ "*" ],
+                    "session": [
+                        "access",
+                        "login"
+                ]
+            }
+        },
+        "write": {
+            "ubus": {
+                    "ul3degs": [ "*" ]
+            }
+        }
+    }
+}

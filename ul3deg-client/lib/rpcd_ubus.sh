@@ -4,17 +4,18 @@
 
 . /usr/share/libubox/jshn.sh
 
-# Copied from:
-# https://stackoverflow.com/questions/31457586/how-can-i-check-ip-version-4-or-6-in-shell-script
-function isipv6 {
+function query_gw {
   local ip=$1
-  # I do not like this bash behavior
-  if [ "$ip" != "${1#*[0-9].[0-9]}" ]; then
-    return 1
-  elif [ "$ip" != "${1#*:[0-9a-fA-F]}" ]; then
-    return 0
-  fi
-  return 1
+	local req=$2
+	
+	# first try https
+	ret=$(curl http://$ip/ubus -d "$req") 2>/dev/null
+	if [ $? -eq 0 ]; then
+		echo $ret
+		return 0
+	fi
+
+	return 1
 }
 
 function request_token {
@@ -36,8 +37,10 @@ function request_token {
   json_close_object
   json_close_array
   req=$(json_dump)
-  # ToDo: specify interface with curl --interface
-  ret=$(curl http://$ip/ubus -d "$req") 2> /dev/null
+	ret=$(query_gw $ip "$req") 2>/dev/null
+	if [ $? != 0 ]; then
+		return 1
+	fi
   json_load "$ret"
   json_get_vars result result
   json_select result
@@ -49,8 +52,7 @@ function request_token {
 function get_free_prefix {
   local token=$1
   local ip=$2
-  local secret=$3
-  local random=$4
+  local random=$3
 
   json_init
   json_add_string "jsonrpc" "2.0"
@@ -65,12 +67,21 @@ function get_free_prefix {
   json_close_object
   json_close_array
   req=$(json_dump)
-  # ToDo: specify interface with curl --interface
-  ret=$(curl http://$ip/ubus -d "$req") 2> /dev/null
+	ret=$(query_gw $ip "$req") 2>/dev/null
+	if [ $? != 0 ]; then
+		return 1
+	fi
   json_load "$ret"
   json_get_vars result result
   json_select result
   json_select 2
-  json_get_var prefix prefix
-  echo $prefix
+
+  json_get_keys keys
+  for key in $keys; do
+    json_get_var val "$key"
+    json_select "$key"
+    json_get_var prefix prefix
+    echo $prefix
+    break
+  done
 }

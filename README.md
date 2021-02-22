@@ -1,4 +1,4 @@
-## [WIP] ul3deg
+## ul3deg
 
 If someone wants to share their DSLer, you need a possible simple prefix assignment in the layer 3 network, which works stateless.
 
@@ -11,7 +11,6 @@ It also becomes interesting when we work with multiple prefixes with combination
 ![](docs/prefix.png)
 
 If preferred lifetime is over, only downstream traffic is allowed. In the source-selection the IP address will be avoided.
-
 
 ## Needed
 - [odhcpcd PR](https://patchwork.ozlabs.org/project/openwrt/patch/20210130163240.28887-1-vincent@systemli.org/)

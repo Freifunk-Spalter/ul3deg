@@ -81,7 +81,9 @@ function get_free_prefix {
     json_get_var val "$key"
     json_select "$key"
     json_get_var prefix prefix
-    echo $prefix
+    json_get_var valid valid
+    json_get_var preferred preferred
+    echo "$prefix $valid $preferred"
     break
   done
 }
